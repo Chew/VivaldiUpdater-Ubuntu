@@ -1,15 +1,19 @@
 #!/usr/bin/env ruby
-require 'vivaldiupdater'
+require_relative '../lib/vivaldiupdater'
 require 'slop'
 
 begin
   opts = Slop.parse do |o|
-    o.bool '-s', '--stable', 'check against stable'
+    o.bool '-s', '--stable', 'check against stable', default: true
+    o.bool '-i', '--install', 'install vivaldi if not installed'
+    o.bool '--skip-current', 'skip checking current'
     o.on '-h', '--help', 'display help' do
       puts "Welcome to VivaldiUpdater"
       puts ""
       puts "Options"
-      puts "  -s, --stable  check against stable"
+      puts "  -s, --stable    check against stable (default)"
+      puts "  -i, --install   install Vivaldi if not installed"
+      puts "  --skip-current  skip checking current version and install anyway"
       exit
     end
   end
@@ -18,4 +22,4 @@ rescue Slop::UnknownOption => e
   exit
 end
 
-VivaldiUpdater.new
+VivaldiUpdater.new(opts.install?, opts.skip_current?)

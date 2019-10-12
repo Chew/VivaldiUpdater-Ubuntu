@@ -2,10 +2,26 @@ require 'rest-client'
 require 'nokogiri'
 
 class VivaldiUpdater
-  def initialize
+  def initialize(install = false, skip_current = false)
     puts "Welcome to Vivaldi Updater for Ubuntu!"
     puts 'Vivaldi is currently running! If you choose to update, please close it!' if running?
-    @current = `dpkg -l vivaldi-stable`.split("\n").last.split(' ')[2]
+    if skip_current
+      @current = "Skipped..."
+    else
+      begin
+        @current = `dpkg -l vivaldi-stable`.split("\n").last.split(' ')[2]
+        puts "Vivaldi is installed, ignoring --install flag" if install
+      rescue NoMethodError
+        case install
+        when true
+          puts "Vivaldi not detected on this machine! Installing..."
+          @current = "None"
+        when false
+          puts "Vivaldi not detected on this machine! If you would like to install Vivaldi, please append '--install' to your command."
+          exit
+        end
+      end
+    end
     puts "Current Vivaldi Version: #{@current}"
     site = RestClient.get('https://vivaldi.com/download').body
     doc = Nokogiri::HTML.parse(site)
@@ -18,7 +34,7 @@ class VivaldiUpdater
       exit
     else
       puts 'Update available! Enter to update, CTRL+C to cancel!'
-      gets
+      STDIN.gets.chomp
       update
     end
   end
