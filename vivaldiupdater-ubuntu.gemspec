@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name = 'vivaldiupdater-ubuntu'
-  s.version = '0.1.0'
-  s.date = '2019-10-11'
+  s.version = '0.1.1'
+  s.date = '2019-10-12'
   s.executables << 'vivaldiupdater'
   s.summary = 'A ruby gem to simplify updating Vivaldi!'
   s.description = 'A ruby gem to simplify updating Vivaldi (for Ubuntu)!'
