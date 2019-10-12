@@ -23,11 +23,13 @@ class VivaldiUpdater
       end
     end
     puts "Current Vivaldi Version: #{@current}"
+    print "Latest Vivaldi Version:  Checking...\r"
     site = RestClient.get('https://vivaldi.com/download').body
     doc = Nokogiri::HTML.parse(site)
     @url = doc.search('a.download-link').first.values[1]
     @version = @url.split('/').last.gsub('_amd64.deb', '').gsub('vivaldi-stable_', '')
-    puts "Latest Vivaldi Version:  #{@version}"
+    $stdout.flush
+    print "Latest Vivaldi Version:  #{@version}\n"
 
     if @current == @version
       puts 'Vivaldi is up to date!'
