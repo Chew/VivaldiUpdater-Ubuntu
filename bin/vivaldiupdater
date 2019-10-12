@@ -1,4 +1,21 @@
 #!/usr/bin/env ruby
 require 'vivaldiupdater'
+require 'slop'
+
+begin
+  opts = Slop.parse do |o|
+    o.bool '-s', '--stable', 'check against stable'
+    o.on '-h', '--help', 'display help' do
+      puts "Welcome to VivaldiUpdater"
+      puts ""
+      puts "Options"
+      puts "  -s, --stable  check against stable"
+      exit
+    end
+  end
+rescue Slop::UnknownOption => e
+  puts "#{e}, try '--help' for help"
+  exit
+end
 
 VivaldiUpdater.new
