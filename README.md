@@ -24,7 +24,9 @@ It's unsure what will happen if these requirements are not met, let me know what
 
 ## Arguments
 
-There are currently no CLI Arguments, I will add options and a `-h` later.
+* `-s, --stable    check against stable (default)`
+* `-i, --install   install Vivaldi if not installed`
+* `--skip-current  skip checking current version and install anyway`
 
 ## To-Do
 
