@@ -24,7 +24,12 @@ class VivaldiUpdater
     end
     puts "Current Vivaldi Version: #{@current}"
     print "Latest Vivaldi Version:  Checking...\r"
-    site = RestClient.get('https://vivaldi.com/download').body
+    begin
+      site = RestClient.get('https://vivaldi.com/download').body
+    rescue Errno::ECONNRESET, SocketError
+      print "Unable to check for latest Vivaldi Version. Check your connection.\n"
+      exit
+    end
     doc = Nokogiri::HTML.parse(site)
     @url = doc.search('a.download-link').first.values[1]
     @version = @url.split('/').last.gsub('_amd64.deb', '').gsub('vivaldi-stable_', '')
